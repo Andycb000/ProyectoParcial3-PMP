@@ -8,12 +8,9 @@ using namespace std;
 
 int Wsizex = 1700;
 int Wsizey = 900;
-int level = 1;
+int level = 0;
 int Lplay = level;
 int collisions = 0;
-
-int checkX;
-int checkY;
 
 int main()
 {

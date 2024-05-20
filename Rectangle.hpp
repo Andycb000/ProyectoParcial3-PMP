@@ -20,7 +20,6 @@ public:
     float angle;
     float playerSize;
     bool go;
-    bool next;
 
     Bullet(Vector2f Bsize);
     Bullet(Vector2f size, Vector2i position);

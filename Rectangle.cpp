@@ -7,7 +7,6 @@ Bullet::Bullet(Vector2f Bsize)
 {
     this->angle=0;
     this->go = true;
-    this->next = false;
     this->playerSize = 25;
 
     this->bala = RectangleShape(Bsize);
@@ -30,7 +29,6 @@ Bullet::Bullet(Vector2f size, Vector2i position)
 {
     this->angle=0;
     this->go = true;
-    this->next = false;
     this->playerSize = 25;
 
     this->bala = RectangleShape(size);
