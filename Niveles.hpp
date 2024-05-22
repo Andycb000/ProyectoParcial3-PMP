@@ -87,7 +87,7 @@ vector <Niveles> nivels = {{100,100,{
 }
 };
 
-void updateTiles(int level, sf::Sprite arena, sf::Sprite alienado){
+void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite arenaMidTop, sf::Sprite arenaFill){
     Tilset.clear();
     Enemies.clear();
     for (int y=0;y<18;y++){
@@ -101,9 +101,21 @@ void updateTiles(int level, sf::Sprite arena, sf::Sprite alienado){
                 tileset.back().setOutlineThickness(1);
                 tileset.back().setOutlineColor(Color::Magenta);
                 */
-                Tilset.push_back(arena);
+               if (nivels[level].mapa[y-1][x]==0 && nivels[level].mapa[y+1][x]==1 && nivels[level].mapa[y][x+1]==1 && nivels[level].mapa[y][x-1]==1 && y!=0 ){
+                Tilset.push_back(arenaMidTop);
                 Tilset.back().setPosition(x*50+25,y*50+25);
                 Tilset.back().setOrigin(25,25);
+               }else {
+                if (nivels[level].mapa[y-1][x]==1 && nivels[level].mapa[y+1][x]==1 && nivels[level].mapa[y][x+1]==1 && nivels[level].mapa[y][x-1]==1){
+                    Tilset.push_back(arenaFill);
+                    Tilset.back().setPosition(x*50+25,y*50+25);
+                    Tilset.back().setOrigin(25,25);
+                }else {
+                    Tilset.push_back(arena);
+                    Tilset.back().setPosition(x*50+25,y*50+25);
+                    Tilset.back().setOrigin(25,25);
+                }
+               }
             }
             if (nivels[level].mapa[y][x]==2){
                 Enemies.push_back(alienado);

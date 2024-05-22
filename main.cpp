@@ -8,7 +8,7 @@ using namespace std;
 
 int Wsizex = 1700;
 int Wsizey = 900;
-int level = 0;
+int level = 1;
 int Lplay = level;
 int collisions = 0;
 
@@ -23,6 +23,14 @@ int main()
     sf::Texture Bloque;
     Bloque.loadFromFile("./Block.png");
     sf::Sprite Estructures(Bloque);   //BLOCK   BLOCK   BLOCK   BLOCK   BLOCK 
+
+    sf::Texture BloqueArenaTop;
+    BloqueArenaTop.loadFromFile("./Block_middle_top.png");
+    sf::Sprite EstructuresMidTop(BloqueArenaTop);   //BLOCK   BLOCK   BLOCK   BLOCK   BLOCK MIDTOP
+
+    sf::Texture BloqueArenaFill;
+    BloqueArenaFill.loadFromFile("./Block_Fill.png");
+    sf::Sprite EstructuresFill(BloqueArenaFill);   //BLOCK   BLOCK   BLOCK   BLOCK   BLOCK Fill
 
     sf::Texture Alien;
     Alien.loadFromFile("./Alien2.png");
@@ -82,7 +90,7 @@ int main()
         window.clear();
         rect.update(Wsizex,Wsizey);
         if (level==Lplay){
-        updateTiles(level, Estructures, Enemigo);
+        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill);
         rect.setOrigin(Vector2f(nivels[level].Pposx,nivels[level].Pposy));
         level++;
         }
