@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Enemigo.hpp"
 #include <vector>
 #include <iostream>
 using namespace sf;
@@ -8,22 +9,20 @@ using namespace std;
 struct Niveles{
     int Pposx;
     int Pposy;
+    int toKill;
     int mapa[18][34];
 };
 
-struct Bloques{
-    int Rposx;
-    int Rposy;
-    RectangleShape cubo;
-};
+Enemigo firstENE;
+
 sf::Texture Tiles;
 //Tiles.loadFromFile("./block.png");
 vector <RectangleShape> tileset;
 vector <sf::Sprite> Tilset;
-vector <sf::Sprite> Enemies;
+vector <Enemigo> Enemies;
 
   //NIVELES v v NIVELES v v NIVELES v v NIVELES v v NIVELES
-vector <Niveles> nivels = {{100,100,{
+vector <Niveles> nivels = {{100,100,1,{
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -44,7 +43,7 @@ vector <Niveles> nivels = {{100,100,{
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 //LEVEL 0
-},{875,175,{
+},{875,175,2,{
 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
@@ -64,7 +63,7 @@ vector <Niveles> nivels = {{100,100,{
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,}
 }// LEVEL 1
-},{825,625,{
+},{825,625,1,{
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,},
 {1,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,},
@@ -77,7 +76,7 @@ vector <Niveles> nivels = {{100,100,{
 {1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,},
 {1,0,0,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,0,0,1,},
 {1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,1,},
-{1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,1,},
+{1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,2,0,1,0,0,1,},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
 {1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,},
 {1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,},
@@ -118,20 +117,25 @@ void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite ar
                }
             }
             if (nivels[level].mapa[y][x]==2){
-                Enemies.push_back(alienado);
-                Enemies.back().setPosition(x*50+25,y*50+25);
-                Enemies.back().setOrigin(25,25);
+                firstENE.sprite = alienado;
+                Enemies.push_back(firstENE);
+                Enemies.back().sprite.setPosition(x*50+25,y*50+5);
+                Enemies.back().sprite.setOrigin(25,25);
             }
         }   
     }
 }
 
-void TilesetDrawTo(RenderWindow &window){
+void TilesetDrawTo(RenderWindow &window, bool &enemigos){
     for (int i=0;i<Tilset.size();i++){
         //window.draw(tileset[i]);
         window.draw(Tilset[i]);
     }
     for (int i=0;i<Enemies.size();i++){
-        window.draw(Enemies[i]);
+
+        window.draw(Enemies[i].sprite);
+        if (enemigos==0){
+        enemigos=1;
+        }
     }
 }

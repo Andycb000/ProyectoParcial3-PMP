@@ -11,6 +11,8 @@ int Wsizey = 900;
 int level = 1;
 int Lplay = level;
 int collisions = 0;
+bool enemigos = 0;
+bool ok=0;
 
 int main()
 {
@@ -19,6 +21,7 @@ int main()
     sf::Sprite Sbala(Tbala);  //BALA    BALA    BALA    BALA    BALA
     Sbala.setOrigin(16,16);
     vector <sf::Sprite> niveles;
+
 
     sf::Texture Bloque;
     Bloque.loadFromFile("./Block.png");
@@ -42,6 +45,7 @@ int main()
     Bullet rect(Vector2f(20,20));
     rect.bala.setOrigin(10,10);
     // loop
+
     while (window.isOpen())
     {
         Event event;
@@ -81,12 +85,54 @@ int main()
                         collisions++;
                         std::cout<<collisions<<"| COLLISION"<<std::endl<<std::endl;
                         rect.Reset();
+                        Lplay++;
                         break;
                     }
                 }
+
             }
 
+            //movimiento de enemigos (Andy)
 
+            if (enemigos==1){
+
+                if (level==2){
+                    if (ok==0){
+                    Enemies[0].velocity = Vector2f(0,-1.f);
+                    Enemies[0].posicionMax = Vector2f(Enemies[0].sprite.getPosition().x,Enemies[0].sprite.getPosition().y-30);
+                    Enemies[0].posicionMin = Enemies[0].sprite.getPosition();
+                    ok=1;
+                    }
+                    Enemies[0].sprite.move(Enemies[0].velocity);
+                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMax.y)
+                    {
+                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
+                    }
+                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMin.y+25)
+                    {
+                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
+                    }
+                }
+
+                if (level==3){
+                    ok=0;
+                if (ok==0){
+                    Enemies[0].velocity = Vector2f(0,-1.f);
+                    Enemies[0].posicionMax = Vector2f(Enemies[0].sprite.getPosition().x,Enemies[0].sprite.getPosition().y-50);
+                    Enemies[0].posicionMin = Enemies[0].sprite.getPosition();
+                    ok=1;
+                    }
+                    Enemies[0].sprite.move(Enemies[0].velocity);
+                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMax.y+20)
+                    {
+                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
+                    }
+                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMin.y+25)
+                    {
+                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
+                    }
+                }
+            }
         window.clear();
         rect.update(Wsizex,Wsizey);
         if (level==Lplay){
@@ -94,7 +140,7 @@ int main()
         rect.setOrigin(Vector2f(nivels[level].Pposx,nivels[level].Pposy));
         level++;
         }
-        TilesetDrawTo(window);
+        TilesetDrawTo(window, enemigos);
         rect.drawTo(window);
         Sbala.setPosition(rect.bala.getPosition().x, rect.bala.getPosition().y);
         Sbala.setRotation(rect.angle);
