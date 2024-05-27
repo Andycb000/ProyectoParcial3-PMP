@@ -119,7 +119,7 @@ void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite ar
             if (nivels[level].mapa[y][x]==2){
                 firstENE.sprite = alienado;
                 Enemies.push_back(firstENE);
-                Enemies.back().sprite.setPosition(x*50+25,y*50+5);
+                Enemies.back().sprite.setPosition(x*50+25,y*50+25);
                 Enemies.back().sprite.setOrigin(25,25);
             }
         }   

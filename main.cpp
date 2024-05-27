@@ -94,43 +94,25 @@ int main()
 
             //movimiento de enemigos (Andy)
 
-            if (enemigos==1){
+            if (enemigos==1){ //si hay un enemigo, evita bug
 
                 if (level==2){
                     if (ok==0){
-                    Enemies[0].velocity = Vector2f(0,-1.f);
-                    Enemies[0].posicionMax = Vector2f(Enemies[0].sprite.getPosition().x,Enemies[0].sprite.getPosition().y-30);
-                    Enemies[0].posicionMin = Enemies[0].sprite.getPosition();
+                        Enemies[0].defineMoveY(-1);
+                        Enemies[1].defineMove(Vector2f(-3.f,-2.f));
                     ok=1;
                     }
-                    Enemies[0].sprite.move(Enemies[0].velocity);
-                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMax.y)
-                    {
-                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
-                    }
-                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMin.y+25)
-                    {
-                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
-                    }
+                    Enemies[0].movimientoY();
+                    Enemies[1].movimientoDiagonal();
                 }
 
                 if (level==3){
-                    ok=0;
-                if (ok==0){
-                    Enemies[0].velocity = Vector2f(0,-1.f);
-                    Enemies[0].posicionMax = Vector2f(Enemies[0].sprite.getPosition().x,Enemies[0].sprite.getPosition().y-50);
-                    Enemies[0].posicionMin = Enemies[0].sprite.getPosition();
+
+                    if (ok==0){
+                    Enemies[0].defineMoveY(-1);
                     ok=1;
                     }
-                    Enemies[0].sprite.move(Enemies[0].velocity);
-                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMax.y+20)
-                    {
-                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
-                    }
-                    if (Enemies[0].sprite.getPosition().y == Enemies[0].posicionMin.y+25)
-                    {
-                        Enemies[0].velocity.y = Enemies[0].velocity.y*-1;
-                    }
+                    Enemies[0].movimientoY();
                 }
             }
         window.clear();
@@ -139,6 +121,7 @@ int main()
         updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill);
         rect.setOrigin(Vector2f(nivels[level].Pposx,nivels[level].Pposy));
         level++;
+        ok=0;
         }
         TilesetDrawTo(window, enemigos);
         rect.drawTo(window);
