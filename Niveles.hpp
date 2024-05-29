@@ -1,10 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include "Enemigo.hpp"
+#include "Rebote.hpp"
 #include <vector>
 #include <iostream>
 using namespace sf;
 using namespace std;
-
 
 struct Niveles{
     int Pposx;
@@ -14,6 +14,8 @@ struct Niveles{
 };
 
 Enemigo firstENE;
+vector <Rebote> Rbloque;
+Rebote firstREB;
 
 sf::Texture Tiles;
 //Tiles.loadFromFile("./block.png");
@@ -44,9 +46,9 @@ vector <Niveles> nivels = {{100,100,1,{
 }
 //LEVEL 0
 },{875,175,2,{
-{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,},
@@ -122,8 +124,15 @@ void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite ar
                 Enemies.back().sprite.setPosition(x*50+25,y*50+25);
                 Enemies.back().sprite.setOrigin(25,25);
             }
+            if (nivels[level].mapa[y][x]==3)
+            {
+                firstREB.sprite = arena;
+                Rbloque.push_back(firstREB);
+                Rbloque.back().sprite.setPosition(x*50+25,y*50+5);
+                Rbloque.back().sprite.setOrigin(25,25);
+            }
         }   
-    }
+    } 
 }
 
 void TilesetDrawTo(RenderWindow &window, bool &enemigos){

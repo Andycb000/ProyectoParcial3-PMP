@@ -128,6 +128,10 @@ int main()
         Sbala.setPosition(rect.bala.getPosition().x, rect.bala.getPosition().y);
         Sbala.setRotation(rect.angle);
         window.draw(Sbala);
+        for (int i=0;i<Rbloque.size();i++)
+        {
+            window.draw(Rbloque[i].sprite);
+        }
         window.display();
     }
 
