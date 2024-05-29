@@ -118,6 +118,8 @@ void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite ar
                 }
                }
             }
+
+            //emilio
             if (nivels[level].mapa[y][x]==2){
                 firstENE.sprite = alienado;
                 Enemies.push_back(firstENE);

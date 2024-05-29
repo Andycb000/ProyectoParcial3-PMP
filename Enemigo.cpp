@@ -4,7 +4,6 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 
 
-
 void Enemigo::movimientoY()
 {
     this->sprite.move(this->velocity);
@@ -48,7 +47,7 @@ void Enemigo::defineMoveX(int bloques)
 void Enemigo::movimientoDiagonal()
 {
     this->sprite.move(this->velocity);
-    if (this->sprite.getPosition() == this->posicionMax)
+    if (this->sprite.getPosition().x == this->posicionMax.x)
     {
         this->velocity.x = this->velocity.x*-1;
         this->velocity.y = this->velocity.y*-1;
@@ -62,7 +61,7 @@ void Enemigo::movimientoDiagonal()
 
 void Enemigo::defineMove(Vector2f bloques)
 {
-    this->velocity.x = -1;
-    this->posicionMax = Vector2f(this->sprite.getPosition().x+bloques.x*50,this->sprite.getPosition().y*bloques.y*50);
+    this->velocity = Vector2f(-1.f,-1.f);
+    this->posicionMax = Vector2f(this->sprite.getPosition().x + bloques.x*50, this->sprite.getPosition().y+bloques.y*50);
     this->posicionMin = this->sprite.getPosition();
 }
