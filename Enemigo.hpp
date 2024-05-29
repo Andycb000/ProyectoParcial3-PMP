@@ -11,6 +11,7 @@ class Enemigo
     Vector2f velocity;
     Vector2f posicionMax;
     Vector2f posicionMin;
+    bool alife;
 
     void movimientoY();
     void movimientoX();

@@ -9,23 +9,37 @@ using namespace std;
 int Wsizex = 1700;
 int Wsizey = 900;
 int level = 1;
-int Lplay = level;
+int Lplay = level-1;
 int collisions = 0;
 bool enemigos = 0;
+int kills=0;
 bool ok=0;
 
 int main()
 {
     sf::Texture Tbala;
     Tbala.loadFromFile("./Bala4.png");
+//emilio
+sf::Texture Fondo;
+    Fondo.loadFromFile("./Bala4.png");
+
     sf::Sprite Sbala(Tbala);  //BALA    BALA    BALA    BALA    BALA
     Sbala.setOrigin(16,16);
     vector <sf::Sprite> niveles;
+    
+    sf::Texture RBloque;
+    RBloque.loadFromFile("./Bloque3.png");
+    sf::Sprite RBLOCK(RBloque);   //BLOCK   BLOCK   BLOCK   BLOCK   BLOCK 
 
-
+     
     sf::Texture Bloque;
     Bloque.loadFromFile("./Block.png");
     sf::Sprite Estructures(Bloque);   //BLOCK   BLOCK   BLOCK   BLOCK   BLOCK 
+
+//Emilio
+      sf::Texture AlienMuerto;
+    AlienMuerto.loadFromFile("./Block.png");
+    sf::Sprite EnemigoDead(AlienMuerto);   //BLOCK   agregar el alien muerto
 
     sf::Texture BloqueArenaTop;
     BloqueArenaTop.loadFromFile("./Block_middle_top.png");
@@ -85,13 +99,31 @@ int main()
                         collisions++;
                         std::cout<<collisions<<"| COLLISION"<<std::endl<<std::endl;
                         rect.Reset();
-                        Lplay++;
                         break;
                     }
                 }
 
             }
-
+            for (int i=0;i<Enemies.size();i++){
+                    if (Sbala.getGlobalBounds().intersects(Enemies[i].sprite.getGlobalBounds()) && Enemies[i].alife==1)
+                    {
+                        Enemies[i].alife=0;
+                        rect.Reset();
+                        kills++;
+                         Enemies[i].sprite = EnemigoDead; //agregar el sprite muerto
+                        break;
+                                            
+                    }
+                }
+//Emilio
+ for (int i=0;i<Rbloque.size();i++){
+                    if (Sbala.getGlobalBounds().intersects(Rbloque[i].sprite.getGlobalBounds()))
+                    {
+                        Sbala.setScale(-1,1);
+                        rect.speed.x=rect.speed.x*-1;
+                        break;
+                    }
+                }
             //movimiento de enemigos (Andy)
 
             if (enemigos==1){ //si hay un enemigo, evita bug
@@ -117,8 +149,13 @@ int main()
             }
         window.clear();
         rect.update(Wsizex,Wsizey);
+        if (kills==nivels[level-1].toKill)
+        {
+            Lplay++;
+            kills=0;
+        }
         if (level==Lplay){
-        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill);
+        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill, RBLOCK);
         rect.setOrigin(Vector2f(nivels[level].Pposx,nivels[level].Pposy));
         level++;
         ok=0;

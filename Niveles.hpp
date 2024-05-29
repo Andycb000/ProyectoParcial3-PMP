@@ -21,10 +21,10 @@ sf::Texture Tiles;
 //Tiles.loadFromFile("./block.png");
 vector <RectangleShape> tileset;
 vector <sf::Sprite> Tilset;
-vector <Enemigo> Enemies;
-
+vector <Enemigo> Enemies; 
+//agregar niveles
   //NIVELES v v NIVELES v v NIVELES v v NIVELES v v NIVELES
-vector <Niveles> nivels = {{100,100,1,{
+vector <Niveles> nivels = {{100,100,0,{
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -45,7 +45,7 @@ vector <Niveles> nivels = {{100,100,1,{
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 //LEVEL 0
-},{875,175,2,{
+},{875,175,0,{
 {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
@@ -65,7 +65,7 @@ vector <Niveles> nivels = {{100,100,1,{
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,}
 }// LEVEL 1
-},{825,625,1,{
+},{825,625,0,{
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,},
 {1,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,},
@@ -88,9 +88,10 @@ vector <Niveles> nivels = {{100,100,1,{
 }
 };
 
-void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite arenaMidTop, sf::Sprite arenaFill){
+void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite arenaMidTop, sf::Sprite arenaFill, sf::Sprite rebote){
     Tilset.clear();
     Enemies.clear();
+    Rbloque.clear();
     for (int y=0;y<18;y++){
         for (int x=0;x<34;x++){
             if (nivels[level].mapa[y][x]==1){
@@ -122,15 +123,17 @@ void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite ar
             //emilio
             if (nivels[level].mapa[y][x]==2){
                 firstENE.sprite = alienado;
+                firstENE.alife=1;
                 Enemies.push_back(firstENE);
                 Enemies.back().sprite.setPosition(x*50+25,y*50+25);
                 Enemies.back().sprite.setOrigin(25,25);
+                nivels[level].toKill++;
             }
             if (nivels[level].mapa[y][x]==3)
             {
-                firstREB.sprite = arena;
+                firstREB.sprite = rebote;
                 Rbloque.push_back(firstREB);
-                Rbloque.back().sprite.setPosition(x*50+25,y*50+5);
+                Rbloque.back().sprite.setPosition(x*50+25,y*50+25);
                 Rbloque.back().sprite.setOrigin(25,25);
             }
         }   
