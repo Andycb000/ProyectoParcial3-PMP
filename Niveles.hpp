@@ -88,7 +88,7 @@ vector <Niveles> nivels = {{100,100,0,{
 }
 };
 
-void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite arenaMidTop, sf::Sprite arenaFill, sf::Sprite rebote, sf:: AlienMuerto){
+void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite arenaMidTop, sf::Sprite arenaFill, sf::Sprite rebote){
     Tilset.clear();
     Enemies.clear();
     Rbloque.clear();
