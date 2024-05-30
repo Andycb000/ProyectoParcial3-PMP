@@ -38,7 +38,7 @@ sf::Texture Fondo;
 
 //Emilio
       sf::Texture AlienMuerto;
-    AlienMuerto.loadFromFile("./Block.png");
+    AlienMuerto.loadFromFile("./AlienMuerto.png");
     sf::Sprite EnemigoDead(AlienMuerto);   //BLOCK   agregar el alien muerto
 
     sf::Texture BloqueArenaTop;
@@ -155,7 +155,7 @@ sf::Texture Fondo;
             kills=0;
         }
         if (level==Lplay){
-        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill, RBLOCK);
+        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill, RBLOCK, EnemigoDead);
         rect.setOrigin(Vector2f(nivels[level].Pposx,nivels[level].Pposy));
         level++;
         ok=0;
