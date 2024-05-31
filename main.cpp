@@ -8,12 +8,17 @@ using namespace std;
 
 int Wsizex = 1700;
 int Wsizey = 900;
-int level = 1;
+int level = 4;
 int Lplay = level-1;
 int collisions = 0;
 bool enemigos = 0;
 int kills=0;
 bool ok=0;
+
+float difx;
+float dify;
+float intX;
+float intY;
 
 int main()
 {
@@ -29,13 +34,22 @@ sf::Texture Fondo;
     
     sf::Texture RBloque;
     RBloque.loadFromFile("./Bloque3.png");
-    sf::Sprite RBLOCK(RBloque);   //BLOCK   BLOCK   BLOCK   BLOCK   BLOCK 
+    sf::Sprite RBLOCK(RBloque);   //REBOTE  REBOTE  REBOTE  REBOTE  REBOTE 
 
      
     sf::Texture Bloque;
     Bloque.loadFromFile("./Block.png");
     sf::Sprite Estructures(Bloque);   //BLOCK   BLOCK   BLOCK   BLOCK   BLOCK 
 
+    sf::Texture CosoRojo;
+    CosoRojo.loadFromFile("./CosaMouse.png");
+    sf::Texture juga;
+    juga.loadFromFile("./Player1.png");
+
+    sf::Mouse mouse;
+    RectangleShape cursor;
+    cursor.setSize(Vector2f(50,50));
+    cursor.setTexture(&CosoRojo);
 //Emilio
       sf::Texture AlienMuerto;
     AlienMuerto.loadFromFile("./AlienMuerto.png");
@@ -58,6 +72,8 @@ sf::Texture Fondo;
     window.setFramerateLimit(60);
     Bullet rect(Vector2f(20,20));
     rect.bala.setOrigin(10,10);
+    rect.player.setTexture(&juga);
+    window.setMouseCursorVisible(false);
     // loop
 
     while (window.isOpen())
@@ -76,7 +92,7 @@ sf::Texture Fondo;
                 {
                     int x = event.mouseButton.x;
                     int y = event.mouseButton.y;
-                    rect.setObjective(Vector2f(x,y));
+                    rect.setObjective(Vector2f(x,y));//igual que la sumativa
                 }
                 if(event.mouseButton.button == Mouse::Right)
                 {
@@ -93,7 +109,7 @@ sf::Texture Fondo;
             
 
         }
-        if (rect.go == false){
+        if (rect.go == false){//checa que la bala este fuera no se si si sirva para algo pero igual
                 for (int i=0;i<Tilset.size();i++){
                     if (Sbala.getGlobalBounds().intersects(Tilset[i].getGlobalBounds())){
                         collisions++;
@@ -101,7 +117,7 @@ sf::Texture Fondo;
                         rect.Reset();
                         break;
                     }
-                }
+                }//checa colisiones con todos los bloques del nivel
 
             }
             for (int i=0;i<Enemies.size();i++){
@@ -114,16 +130,26 @@ sf::Texture Fondo;
                         break;
                                             
                     }
-                }
+                }//checa colisiones con todos los enemigos
 //Emilio
  for (int i=0;i<Rbloque.size();i++){
                     if (Sbala.getGlobalBounds().intersects(Rbloque[i].sprite.getGlobalBounds()))
                     {
-                        Sbala.setScale(-1,1);
-                        rect.speed.x=rect.speed.x*-1;
+                        difx = Sbala.getPosition().x - Rbloque[i].sprite.getPosition().x;
+                        dify = Sbala.getPosition().y - Rbloque[i].sprite.getPosition().y;
+                        intX = abs(difx) - 50;
+                        intY = abs(dify) - 50;//para colisiones Y y X;
+
+                        if (intX < intY){
+                            Sbala.setScale(Sbala.getScale().x,Sbala.getScale().y*-1);
+                            rect.speed.y=rect.speed.y*-1;
+                        }else{
+                            Sbala.setScale(Sbala.getScale().x*-1,Sbala.getScale().y);
+                            rect.speed.x=rect.speed.x*-1;
+                        }
                         break;
                     }
-                }
+                }//checa colisiones con los slimes
             //movimiento de enemigos (Andy)
 
             if (enemigos==1){ //si hay un enemigo, evita bug
@@ -153,22 +179,26 @@ sf::Texture Fondo;
         {
             Lplay++;
             kills=0;
-        }
-        if (level==Lplay){
-        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill, RBLOCK, EnemigoDead);
+        }//cambia de nivel si ya mataste todos los enemigos
+        if (level==Lplay && level<nivels.size()){
+        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill, RBLOCK);
         rect.setOrigin(Vector2f(nivels[level].Pposx,nivels[level].Pposy));
         level++;
         ok=0;
-        }
+        }//cambia de nivel
         TilesetDrawTo(window, enemigos);
-        rect.drawTo(window);
         Sbala.setPosition(rect.bala.getPosition().x, rect.bala.getPosition().y);
         Sbala.setRotation(rect.angle);
         window.draw(Sbala);
+        if (rect.go == true)Sbala.setScale(1,1);
         for (int i=0;i<Rbloque.size();i++)
         {
             window.draw(Rbloque[i].sprite);
         }
+        cursor.setOrigin(25,25);
+        cursor.setPosition(mouse.getPosition().x - window.getPosition().x-10,mouse.getPosition().y - window.getPosition().y-40);
+        rect.drawTo(window);
+        window.draw(cursor);
         window.display();
     }
 

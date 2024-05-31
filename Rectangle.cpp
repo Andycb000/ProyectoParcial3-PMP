@@ -17,7 +17,7 @@ Bullet::Bullet(Vector2f Bsize)
     this->origin = Vector2f(0.f,0.f);
 
     this->player = CircleShape(25.f);
-    this->player.setFillColor(Color::Cyan);
+    //this->player.setFillColor(Color::Cyan);
     this->player.setOutlineThickness(2);
     this->player.setOutlineColor(Color::Red);
     //this->player.setPosition(origin.x - (this->bala.getSize().x/2), origin.y - (this->bala.getSize().y/2));
@@ -39,24 +39,24 @@ Bullet::Bullet(Vector2f size, Vector2i position)
     this->bala.setPosition(Vector2f(position));
 
     this->player = CircleShape(20.f);
-    this->player.setFillColor(Color::Cyan);
+    //this->player.setFillColor(Color::Cyan);
     this->player.setPosition(this->origin.x - (this->bala.getSize().x/2), this->origin.y - (this->bala.getSize().y/2));
 }
 
-void Bullet::Reset(){
+void Bullet::Reset(){//reset de posición de la bala
         this->bala.setPosition(this->origin);
         this->speed = Vector2f(0.f,0.f);
-        this->player.setFillColor(Color::Transparent);
+        //this->player.setFillColor(Color::Transparent);
         this->player.setOutlineColor(Color::Red);
         this->go = true;
         this->angle = -90;
 }
 
-void Bullet::update(int Wsizex, int Wsizey)
+void Bullet::update(int Wsizex, int Wsizey)//mueve la bala o la regresa dependiendo, como la sumativa
 {
     if (go == false){
         this->bala.move(speed);
-        this->player.setFillColor(Color::Red);
+        //this->player.setFillColor(Color::Red);
     }
     if (this->bala.getPosition().x >= Wsizex - this->bala.getSize().x || this->bala.getPosition().x <= 0 || this->bala.getPosition().y >= Wsizey - this->bala.getSize().y || this->bala.getPosition().y <= 0){
         this->Reset();
@@ -64,7 +64,7 @@ void Bullet::update(int Wsizex, int Wsizey)
     
 }
 
-void Bullet::setObjective(Vector2f objective)
+void Bullet::setObjective(Vector2f objective)//pone el objetivo, como la sumativa
 {
     if (go == true){
     this->go = false; 
@@ -80,7 +80,7 @@ void Bullet::setObjective(Vector2f objective)
     }else{
         this->go=true;
     }
-
+    //de aqui abajo son los calculos del angulo
     if (difx > 0 && dify < 0){
         this->dify=this->dify * -1;
         this->angle = atan(this->dify/this->difx);
@@ -125,7 +125,7 @@ void Bullet::setObjective(Vector2f objective)
 }
 }
 
-void Bullet::setOrigin(Vector2f origin)
+void Bullet::setOrigin(Vector2f origin)//pone la posición del jugador, en teoría no se utilizara
 {
     this->origin = origin;
     this->player.setPosition(this->origin.x, this->origin.y);
@@ -136,6 +136,7 @@ void Bullet::setOrigin(Vector2f origin)
 
 void Bullet::drawTo(RenderWindow &window)
 {
-    window.draw(this->bala);
+    this->bala.setFillColor(Color::Transparent);
     window.draw(this->player);
+    window.draw(this->bala);
 }
