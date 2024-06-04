@@ -8,7 +8,7 @@ using namespace std;
 
 int Wsizex = 1700;
 int Wsizey = 900;
-int level = 4;
+int level = 1;
 int Lplay = level-1;
 int collisions = 0;
 bool enemigos = 0;
@@ -31,11 +31,56 @@ sf::Texture Fondo;
     sf::Sprite Sbala(Tbala);  //BALA    BALA    BALA    BALA    BALA
     Sbala.setOrigin(16,16);
     vector <sf::Sprite> niveles;
-    
+
     sf::Texture RBloque;
     RBloque.loadFromFile("./Bloque3.png");
     sf::Sprite RBLOCK(RBloque);   //REBOTE  REBOTE  REBOTE  REBOTE  REBOTE 
+    
+    
+        sf::Texture Fill;
+        Fill.loadFromFile("sprites/Bb.png");
+        sf::Sprite BlockBb(Fill);
 
+        sf::Texture Out;
+        Out.loadFromFile("sprites/O.png");
+        sf::Sprite BlockO(Out);
+
+        sf::Texture Up;
+        Up.loadFromFile("sprites/GroundWall.png");
+        sf::Sprite Blockl(Up);
+
+        sf::Texture Up2;
+        Up2.loadFromFile("sprites/NoTopBottom.png");
+        sf::Sprite Blockl_l(Up2);
+
+        sf::Texture Up3;
+        Up3.loadFromFile("sprites/UpNoSides.png");
+        sf::Sprite Blocklul(Up3);
+
+        sf::Texture Up4;
+        Up4.loadFromFile("sprites/Border.png");
+        sf::Sprite Blockul(Up4);
+
+        sf::Texture Up5d;
+        Up5d.loadFromFile("sprites/BorderPoint.png");
+        sf::Sprite Blockpul(Up5d);
+
+        sf::Texture Dot1;
+        Dot1.loadFromFile("sprites/Point1.png");
+        sf::Sprite Blockp1(Dot1);
+
+        sf::Texture Dot2;
+        Dot2.loadFromFile("sprites/Point2.png");
+        sf::Sprite Blockp2(Dot2);
+
+        sf::Texture Dot3;
+        Dot3.loadFromFile("sprites/Point3.png");
+        sf::Sprite Blockp3(Dot3);
+
+        sf::Texture Dot4;
+        Dot4.loadFromFile("sprites/Point4.png");
+        sf::Sprite Blockp4(Dot4);
+    
      
     sf::Texture Bloque;
     Bloque.loadFromFile("./Block.png");
@@ -181,7 +226,7 @@ sf::Texture Fondo;
             kills=0;
         }//cambia de nivel si ya mataste todos los enemigos
         if (level==Lplay && level<nivels.size()){
-        updateTiles(level, Enemigo, Estructures, EstructuresMidTop, EstructuresFill, RBLOCK);
+        updateTiles(level, Enemigo, BlockO, Blockl, BlockBb, RBLOCK);
         rect.setOrigin(Vector2f(nivels[level].Pposx,nivels[level].Pposy));
         level++;
         ok=0;

@@ -5,7 +5,6 @@
 #include <iostream>
 using namespace sf;
 using namespace std;
-
 struct Niveles{
     int Pposx;
     int Pposy;
@@ -145,6 +144,7 @@ void updateTiles(int level, sf::Sprite alienado, sf::Sprite arena, sf::Sprite ar
                 */
                if (nivels[level].mapa[y-1][x]==0 && nivels[level].mapa[y+1][x]==1 && nivels[level].mapa[y][x+1]==1 && nivels[level].mapa[y][x-1]==1 && y!=0 ){
                 Tilset.push_back(arenaMidTop);
+                Tilset.back().setRotation(270);
                 Tilset.back().setPosition(x*50+25,y*50+25);
                 Tilset.back().setOrigin(25,25);
                }else {
