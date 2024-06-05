@@ -1,6 +1,7 @@
 #include "Rectangle.hpp"
 #include "Niveles.hpp"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <iostream>
 using namespace sf;
@@ -8,11 +9,12 @@ using namespace std;
 
 int Wsizex = 1700;
 int Wsizey = 900;
-int level = 1;
+int level = 3;
 int Lplay = level-1;
 int collisions = 0;
 bool enemigos = 0;
 int kills=0;
+int rebotewait = 0;
 bool ok=0;
 
 float difx;
@@ -20,8 +22,17 @@ float dify;
 float intX;
 float intY;
 
+
 int main()
 {
+    // SoundBuffer back;
+    // if (!back.loadFromFile("Audios/shot.wav")){
+        
+    // }
+    // Sound sound;
+    // sound.setBuffer(back);
+    // sound.play();
+
     sf::Texture Tbala;
     Tbala.loadFromFile("./Bala4.png");
 //emilio
@@ -113,7 +124,9 @@ sf::Texture Fondo;
     sf::Sprite Enemigo(Alien);
 
     // setup
-    RenderWindow window(VideoMode(Wsizex, Wsizey), "SFML works!");
+
+
+    RenderWindow window(VideoMode(Wsizex, Wsizey), "ShooterChafa!");
     window.setFramerateLimit(60);
     Bullet rect(Vector2f(20,20));
     rect.bala.setOrigin(10,10);
@@ -123,6 +136,7 @@ sf::Texture Fondo;
 
     while (window.isOpen())
     {
+    //bm.play();
         Event event;
         while (window.pollEvent(event))
         {
@@ -171,7 +185,7 @@ sf::Texture Fondo;
                         Enemies[i].alife=0;
                         rect.Reset();
                         kills++;
-                         Enemies[i].sprite = EnemigoDead; //agregar el sprite muerto
+                         Enemies[i].sprite.setTexture(AlienMuerto); //agregar el sprite muerto
                         break;
                                             
                     }
@@ -180,6 +194,9 @@ sf::Texture Fondo;
  for (int i=0;i<Rbloque.size();i++){
                     if (Sbala.getGlobalBounds().intersects(Rbloque[i].sprite.getGlobalBounds()))
                     {
+
+                        if (rebotewait==0){
+                        rebotewait++;
                         difx = Sbala.getPosition().x - Rbloque[i].sprite.getPosition().x;
                         dify = Sbala.getPosition().y - Rbloque[i].sprite.getPosition().y;
                         intX = abs(difx) - 50;
@@ -191,6 +208,8 @@ sf::Texture Fondo;
                         }else{
                             Sbala.setScale(Sbala.getScale().x*-1,Sbala.getScale().y);
                             rect.speed.x=rect.speed.x*-1;
+                        }
+
                         }
                         break;
                     }
@@ -218,6 +237,13 @@ sf::Texture Fondo;
                     Enemies[0].movimientoY();
                 }
             }
+            if (rebotewait>0){
+                rebotewait++;
+            }
+            if (rebotewait>=10){
+                rebotewait=0;
+            }
+            std::cout<<rebotewait<<endl;
         window.clear();
         rect.update(Wsizex,Wsizey);
         if (kills==nivels[level-1].toKill)
