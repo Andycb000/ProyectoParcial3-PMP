@@ -9,7 +9,7 @@ using namespace std;
 
 int Wsizex = 1700;
 int Wsizey = 900;
-int level = 3;
+int level = 1;
 int Lplay = level-1;
 int collisions = 0;
 bool enemigos = 0;
@@ -23,21 +23,64 @@ float intX;
 float intY;
 
 
-int main()
+int main()//(3.3,3.4)
 {
-    // SoundBuffer back;
-    // if (!back.loadFromFile("Audios/shot.wav")){
+
+    sf::Font font;
+    if (!font.loadFromFile("asman/ASMAN.TTF")){
+        std::cout<<"NO JALO EL TEXTO";
+    }
+    sf::Text titulo;
+    titulo.setFont(font);
+    titulo.setString("ALIENIJENAS CALIENTES SHOOTER");
+    titulo.setScale(2,2);
+    titulo.setColor(Color::Cyan);
+    titulo.setPosition(400,0);
+
+    SoundBuffer shot;
+    if (!shot.loadFromFile("Audios/shot.wav")){
         
-    // }
-    // Sound sound;
-    // sound.setBuffer(back);
-    // sound.play();
+    }
+    Sound sound;
+    sound.setBuffer(shot);
+    sound.setVolume(5);
+
+    SoundBuffer back;
+    if (!back.loadFromFile("Audios/music.wav")){
+        
+    }
+    Sound music;
+    music.setBuffer(back);
+    music.play();
+    music.setVolume(10);
+
+    SoundBuffer slime;
+    if (!slime.loadFromFile("Audios/slime.wav")){
+        
+    }
+    Sound slimi;
+    slimi.setBuffer(slime);
+    slimi.setVolume(100);
+
+    SoundBuffer death;
+    if (!death.loadFromFile("Audios/muerteMonster.wav")){
+        
+    }
+    Sound almue;
+    almue.setBuffer(death);
 
     sf::Texture Tbala;
     Tbala.loadFromFile("./Bala4.png");
 //emilio
-sf::Texture Fondo;
-    Fondo.loadFromFile("./Bala4.png");
+    sf::Texture Fondo;
+    Fondo.loadFromFile("./fondo1.jpg");
+    sf::Sprite fondox(Fondo);
+    fondox.setScale(6.2,5);
+
+    sf::Texture OVNI;
+    OVNI.loadFromFile("./alienchido.png");
+    sf::Sprite alien(OVNI);
+    alien.setScale(4,4);
 
     sf::Sprite Sbala(Tbala);  //BALA    BALA    BALA    BALA    BALA
     Sbala.setOrigin(16,16);
@@ -152,15 +195,16 @@ sf::Texture Fondo;
                     int x = event.mouseButton.x;
                     int y = event.mouseButton.y;
                     rect.setObjective(Vector2f(x,y));//igual que la sumativa
+                    sound.play();
                 }
-                if(event.mouseButton.button == Mouse::Right)
-                {
-                    int Xx = event.mouseButton.x;
-                    int Yy = event.mouseButton.y;
-                    if (1){
-                    rect.setOrigin(Vector2f(Xx,Yy));
-                    }
-                }
+                // if(event.mouseButton.button == Mouse::Right)
+                // {
+                //     int Xx = event.mouseButton.x;
+                //     int Yy = event.mouseButton.y;
+                //     if (1){
+                //     rect.setOrigin(Vector2f(Xx,Yy));
+                //     }
+                // }
             }
         
             
@@ -185,7 +229,8 @@ sf::Texture Fondo;
                         Enemies[i].alife=0;
                         rect.Reset();
                         kills++;
-                         Enemies[i].sprite.setTexture(AlienMuerto); //agregar el sprite muerto
+                        almue.play();
+                        Enemies[i].sprite.setTexture(AlienMuerto); //agregar el sprite muerto
                         break;
                                             
                     }
@@ -197,6 +242,7 @@ sf::Texture Fondo;
 
                         if (rebotewait==0){
                         rebotewait++;
+                        slimi.play();
                         difx = Sbala.getPosition().x - Rbloque[i].sprite.getPosition().x;
                         dify = Sbala.getPosition().y - Rbloque[i].sprite.getPosition().y;
                         intX = abs(difx) - 50;
@@ -257,6 +303,13 @@ sf::Texture Fondo;
         level++;
         ok=0;
         }//cambia de nivel
+
+        window.draw(fondox);
+        if(Lplay==1)
+        {
+            window.draw(titulo);
+            window.draw(alien);
+        }
         TilesetDrawTo(window, enemigos);
         Sbala.setPosition(rect.bala.getPosition().x, rect.bala.getPosition().y);
         Sbala.setRotation(rect.angle);
